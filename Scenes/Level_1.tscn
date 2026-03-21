@@ -1,0 +1,51 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="PackedScene" path="res://Scenes/Player.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://Scenes/Food.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://Scenes/Level1UI.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://Scenes/KitchenDecor.tscn" id="4"]
+
+[node name="Level_1" type="Node2D"]
+y_sort_enabled = true
+
+[node name="BackgroundLayer" type="CanvasLayer" parent="."]
+layer = -1
+[node name="BackgroundRect" type="ColorRect" parent="BackgroundLayer"]
+anchor_left = 0
+anchor_top = 0
+anchor_right = 1
+anchor_bottom = 1
+offset_left = 0
+offset_top = 0
+offset_right = 0
+offset_bottom = 0
+color = Color(0.34, 0.36, 0.38, 1)
+
+[node name="KitchenDecor" parent="." instance=ExtResource("4")]
+
+[node name="Player" parent="." instance=ExtResource("1")]
+position = Vector2(480, 420)
+
+[node name="Food_1" parent="." instance=ExtResource("2")]
+position = Vector2(120, 410)
+[node name="Food_2" parent="." instance=ExtResource("2")]
+position = Vector2(240, 410)
+[node name="Food_3" parent="." instance=ExtResource("2")]
+position = Vector2(360, 410)
+[node name="Food_4" parent="." instance=ExtResource("2")]
+position = Vector2(480, 410)
+[node name="Food_5" parent="." instance=ExtResource("2")]
+position = Vector2(600, 410)
+
+[node name="Food_6" parent="." instance=ExtResource("2")]
+position = Vector2(120, 490)
+[node name="Food_7" parent="." instance=ExtResource("2")]
+position = Vector2(240, 490)
+[node name="Food_8" parent="." instance=ExtResource("2")]
+position = Vector2(360, 490)
+[node name="Food_9" parent="." instance=ExtResource("2")]
+position = Vector2(480, 490)
+[node name="Food_10" parent="." instance=ExtResource("2")]
+position = Vector2(600, 490)
+
+[node name="Level1UI" parent="." instance=ExtResource("3")]
