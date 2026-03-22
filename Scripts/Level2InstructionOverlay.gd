@@ -1,6 +1,6 @@
 extends Control
 
-const NEXT_SCENE_PATH := "res://Scenes/map_lv_2_new.scn"
+const NEXT_SCENE_PATH := "res://Scenes/map_lv_2_new.tscn"
 const TEXTURE_PATH := "res://Assets/ui/level2_instruction_overlay.jpg"
 const DISPLAY_SEC := 3.0
 
