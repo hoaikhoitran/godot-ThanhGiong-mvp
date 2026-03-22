@@ -1,6 +1,6 @@
 extends Control
 
-const CUTSCENE_PATH := "res://Scenes/Cutscene.tscn"
+const OPENING_DIALOGUE_PATH := "res://Scenes/OpeningDialogue.tscn"
 
 @onready var video_player: VideoStreamPlayer = $VideoStreamPlayer
 
@@ -16,15 +16,15 @@ func _ready() -> void:
 
 
 func _on_video_finished() -> void:
-	_go_to_cutscene()
+	_go_to_opening_dialogue()
 
 
-func _go_to_cutscene() -> void:
+func _go_to_opening_dialogue() -> void:
 	if _transitioning:
 		return
 	_transitioning = true
 	video_player.stop()
-	get_tree().change_scene_to_file(CUTSCENE_PATH)
+	get_tree().change_scene_to_file(OPENING_DIALOGUE_PATH)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -36,4 +36,4 @@ func _unhandled_input(event: InputEvent) -> void:
 			var tree := get_tree()
 			if tree != null:
 				tree.root.set_input_as_handled()
-			_go_to_cutscene()
+			_go_to_opening_dialogue()
