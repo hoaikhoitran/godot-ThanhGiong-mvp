@@ -1,0 +1,233 @@
+[
+  {
+    "animation": "idle",
+    "frame": 1,
+    "filename": "idle/idle_01.png",
+    "x0": 11,
+    "y0": 7,
+    "x1": 239,
+    "y1": 253,
+    "width": 228,
+    "height": 246
+  },
+  {
+    "animation": "idle",
+    "frame": 2,
+    "filename": "idle/idle_02.png",
+    "x0": 262,
+    "y0": 13,
+    "x1": 481,
+    "y1": 253,
+    "width": 219,
+    "height": 240
+  },
+  {
+    "animation": "idle",
+    "frame": 3,
+    "filename": "idle/idle_03.png",
+    "x0": 502,
+    "y0": 14,
+    "x1": 719,
+    "y1": 253,
+    "width": 217,
+    "height": 239
+  },
+  {
+    "animation": "idle",
+    "frame": 4,
+    "filename": "idle/idle_04.png",
+    "x0": 746,
+    "y0": 13,
+    "x1": 959,
+    "y1": 253,
+    "width": 213,
+    "height": 240
+  },
+  {
+    "animation": "run",
+    "frame": 1,
+    "filename": "run/run_01.png",
+    "x0": 9,
+    "y0": 255,
+    "x1": 215,
+    "y1": 501,
+    "width": 206,
+    "height": 246
+  },
+  {
+    "animation": "run",
+    "frame": 2,
+    "filename": "run/run_02.png",
+    "x0": 202,
+    "y0": 273,
+    "x1": 403,
+    "y1": 466,
+    "width": 201,
+    "height": 193
+  },
+  {
+    "animation": "run",
+    "frame": 3,
+    "filename": "run/run_03.png",
+    "x0": 394,
+    "y0": 272,
+    "x1": 591,
+    "y1": 466,
+    "width": 197,
+    "height": 194
+  },
+  {
+    "animation": "run",
+    "frame": 4,
+    "filename": "run/run_04.png",
+    "x0": 572,
+    "y0": 272,
+    "x1": 777,
+    "y1": 460,
+    "width": 205,
+    "height": 188
+  },
+  {
+    "animation": "run",
+    "frame": 5,
+    "filename": "run/run_05.png",
+    "x0": 762,
+    "y0": 273,
+    "x1": 968,
+    "y1": 471,
+    "width": 206,
+    "height": 198
+  },
+  {
+    "animation": "attack1_swipe",
+    "frame": 1,
+    "filename": "attack1_swipe/attack1_swipe_01.png",
+    "x0": 43,
+    "y0": 469,
+    "x1": 371,
+    "y1": 705,
+    "width": 328,
+    "height": 236
+  },
+  {
+    "animation": "attack1_swipe",
+    "frame": 2,
+    "filename": "attack1_swipe/attack1_swipe_02.png",
+    "x0": 388,
+    "y0": 483,
+    "x1": 616,
+    "y1": 679,
+    "width": 228,
+    "height": 196
+  },
+  {
+    "animation": "attack1_swipe",
+    "frame": 3,
+    "filename": "attack1_swipe/attack1_swipe_03.png",
+    "x0": 639,
+    "y0": 470,
+    "x1": 850,
+    "y1": 679,
+    "width": 211,
+    "height": 209
+  },
+  {
+    "animation": "attack2_powerful_thrust",
+    "frame": 1,
+    "filename": "attack2_powerful_thrust/attack2_powerful_thrust_01.png",
+    "x0": 9,
+    "y0": 674,
+    "x1": 259,
+    "y1": 898,
+    "width": 250,
+    "height": 224
+  },
+  {
+    "animation": "attack2_powerful_thrust",
+    "frame": 2,
+    "filename": "attack2_powerful_thrust/attack2_powerful_thrust_02.png",
+    "x0": 260,
+    "y0": 673,
+    "x1": 474,
+    "y1": 895,
+    "width": 214,
+    "height": 222
+  },
+  {
+    "animation": "attack2_powerful_thrust",
+    "frame": 3,
+    "filename": "attack2_powerful_thrust/attack2_powerful_thrust_03.png",
+    "x0": 503,
+    "y0": 711,
+    "x1": 734,
+    "y1": 896,
+    "width": 231,
+    "height": 185
+  },
+  {
+    "animation": "attack2_powerful_thrust",
+    "frame": 4,
+    "filename": "attack2_powerful_thrust/attack2_powerful_thrust_04.png",
+    "x0": 741,
+    "y0": 711,
+    "x1": 959,
+    "y1": 898,
+    "width": 218,
+    "height": 187
+  },
+  {
+    "animation": "block",
+    "frame": 1,
+    "filename": "block/block_01.png",
+    "x0": 11,
+    "y0": 896,
+    "x1": 199,
+    "y1": 1103,
+    "width": 188,
+    "height": 207
+  },
+  {
+    "animation": "block",
+    "frame": 2,
+    "filename": "block/block_02.png",
+    "x0": 223,
+    "y0": 902,
+    "x1": 394,
+    "y1": 1101,
+    "width": 171,
+    "height": 199
+  },
+  {
+    "animation": "block",
+    "frame": 3,
+    "filename": "block/block_03.png",
+    "x0": 407,
+    "y0": 898,
+    "x1": 589,
+    "y1": 1102,
+    "width": 182,
+    "height": 204
+  },
+  {
+    "animation": "block",
+    "frame": 4,
+    "filename": "block/block_04.png",
+    "x0": 602,
+    "y0": 900,
+    "x1": 783,
+    "y1": 1101,
+    "width": 181,
+    "height": 201
+  },
+  {
+    "animation": "block",
+    "frame": 5,
+    "filename": "block/block_05.png",
+    "x0": 792,
+    "y0": 907,
+    "x1": 975,
+    "y1": 1103,
+    "width": 183,
+    "height": 196
+  }
+]

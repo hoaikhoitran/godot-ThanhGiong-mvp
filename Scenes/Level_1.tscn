@@ -1,5 +1,6 @@
 [gd_scene load_steps=5 format=3]
 
+[ext_resource type="Script" path="res://Scripts/Level1.gd" id="1_level1"]
 [ext_resource type="PackedScene" path="res://Scenes/Player.tscn" id="1"]
 [ext_resource type="PackedScene" path="res://Scenes/Food.tscn" id="2"]
 [ext_resource type="PackedScene" path="res://Scenes/Level1UI.tscn" id="3"]
@@ -7,6 +8,7 @@
 
 [node name="Level_1" type="Node2D"]
 y_sort_enabled = true
+script = ExtResource("1_level1")
 
 [node name="BackgroundLayer" type="CanvasLayer" parent="."]
 layer = -1

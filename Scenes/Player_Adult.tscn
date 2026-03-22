@@ -1,27 +1,33 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=4 format=3 uid="uid://player_adult_horse_v1"]
 
 [ext_resource type="Script" path="res://Scripts/PlayerAdult.gd" id="1"]
-[ext_resource type="Texture2D" path="res://icon.svg" id="2"]
+[ext_resource type="SpriteFrames" path="res://Assets/characters/horse_rider/horse_rider_sprite_frames.tres" id="2_horse"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
-size = Vector2(18, 18)
+size = Vector2(60, 60)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2"]
-size = Vector2(14, 10)
+size = Vector2(42, 30)
 
 [node name="Player_Adult" type="CharacterBody2D"]
 position = Vector2(120, 420)
 script = ExtResource("1")
-collision_layer = 1
+collision_layer = 2
 collision_mask = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_1")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2")
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+z_index = 10
+offset = Vector2(0, -102)
+scale = Vector2(0.45, 0.45)
+sprite_frames = ExtResource("2_horse")
+animation = &"idle"
+autoplay = "idle"
 
 [node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.67, 0.67)
 position_smoothing_enabled = true
 position_smoothing_speed = 10.0
 limit_smoothed = true
@@ -31,8 +37,13 @@ monitoring = false
 monitorable = false
 collision_layer = 1
 collision_mask = 1
-position = Vector2(18, 0)
+position = Vector2(0, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackHitbox"]
 shape = SubResource("RectangleShape2D_2")
 
+[node name="Attack1Sfx" type="AudioStreamPlayer" parent="."]
+volume_db = -6.0
+
+[node name="Attack2PunchSfx" type="AudioStreamPlayer" parent="."]
+volume_db = -3.0

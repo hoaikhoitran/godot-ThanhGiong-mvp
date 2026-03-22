@@ -1,0 +1,19 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://dw4cf6mdgie64"
+
+[deps]
+
+files=["res://Assets/characters/horse_rider/manifest.frame.translation", "res://Assets/characters/horse_rider/manifest.filename.translation", "res://Assets/characters/horse_rider/manifest.x0.translation", "res://Assets/characters/horse_rider/manifest.y0.translation", "res://Assets/characters/horse_rider/manifest.x1.translation", "res://Assets/characters/horse_rider/manifest.y1.translation", "res://Assets/characters/horse_rider/manifest.width.translation", "res://Assets/characters/horse_rider/manifest.height.translation"]
+
+source_file="res://Assets/characters/horse_rider/manifest.csv"
+dest_files=["res://Assets/characters/horse_rider/manifest.frame.translation", "res://Assets/characters/horse_rider/manifest.filename.translation", "res://Assets/characters/horse_rider/manifest.x0.translation", "res://Assets/characters/horse_rider/manifest.y0.translation", "res://Assets/characters/horse_rider/manifest.x1.translation", "res://Assets/characters/horse_rider/manifest.y1.translation", "res://Assets/characters/horse_rider/manifest.width.translation", "res://Assets/characters/horse_rider/manifest.height.translation"]
+
+[params]
+
+compress=1
+delimiter=0
+unescape_keys=false
+unescape_translations=true

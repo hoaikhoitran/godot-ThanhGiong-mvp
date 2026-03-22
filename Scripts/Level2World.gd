@@ -1,18 +1,17 @@
 extends Node2D
 
-## Tile map size (tiles) and layout constants for Level 2 village.
+## Tile map size (tile cells) and world scale for Level 2 (Mystic Woods).
+## Native art is 16×16; TileMapLayers use scale 2 so one cell = 32 world pixels.
 const MAP_SIZE_TILES := Vector2i(60, 34)
 const TILE_PX := 32
 
-const _GRASS := [Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0)]
-const _DIRT_A := Vector2i(3, 0)
-const _DIRT_B := Vector2i(4, 0)
-const _WATER := Vector2i(5, 0)
-const _BAMBOO_FLOOR := Vector2i(5, 1)
-const _RICE_BG := Vector2i(0, 5)
-const _ROOF := Vector2i(2, 2)
-const _HOUSE := Vector2i(1, 3)
-const _FENCE := Vector2i(0, 4)
+const SRC_PLAINS := 0
+const SRC_WATER := 1
+const SRC_DECOR := 2
+
+const _GRASS_X := [0, 1, 2]
+const _DIRT_A := Vector2i(3, 4)
+const _DIRT_B := Vector2i(4, 4)
 
 ## Central clearing reserved for UI / safe play (tile coords).
 const UI_CLEAR_TILES := Rect2i(25, 13, 10, 8)
@@ -21,28 +20,35 @@ const UI_CLEAR_TILES := Rect2i(25, 13, 10, 8)
 @onready var _ground: TileMapLayer = $TileMapLayer_Ground
 @onready var _deco: TileMapLayer = $TileMapLayer_Decoration
 
-var _rng := RandomNumberGenerator.new()
-
 
 func _ready() -> void:
-	_rng.randomize()
 	_paint_level()
 	var px := Vector2(MAP_SIZE_TILES) * float(TILE_PX)
-	set_meta("level2_map_bounds", Rect2(Vector2.ZERO, px))
+	# World-space rect so Player_Adult clamp/camera match the full grass field (meta is read after parent _ready).
+	set_meta("level2_map_bounds", Rect2(global_position, px))
 	set_meta("level2_ui_exclusion", _ui_exclusion_rect_pixels())
 
 
 func get_map_bounds() -> Rect2:
-	return get_meta("level2_map_bounds") if has_meta("level2_map_bounds") else Rect2(Vector2.ZERO, Vector2(MAP_SIZE_TILES) * float(TILE_PX))
+	if has_meta("level2_map_bounds"):
+		return get_meta("level2_map_bounds") as Rect2
+	return Rect2(global_position, Vector2(MAP_SIZE_TILES) * float(TILE_PX))
 
 
 func get_ui_exclusion_rect() -> Rect2:
 	return get_meta("level2_ui_exclusion") if has_meta("level2_ui_exclusion") else _ui_exclusion_rect_pixels()
 
 
+## Used by Level2Manager so enemies are not spawned on water tiles.
+func level2_is_spawn_position_valid(world_pos: Vector2) -> bool:
+	var local := _ground.to_local(world_pos)
+	var cell := _ground.local_to_map(local)
+	return _ground.get_cell_source_id(cell) != SRC_WATER
+
+
 func _ui_exclusion_rect_pixels() -> Rect2:
 	return Rect2(
-		Vector2(UI_CLEAR_TILES.position) * float(TILE_PX),
+		global_position + Vector2(UI_CLEAR_TILES.position) * float(TILE_PX),
 		Vector2(UI_CLEAR_TILES.size) * float(TILE_PX)
 	)
 
@@ -55,60 +61,39 @@ func _paint_level() -> void:
 	for y in range(MAP_SIZE_TILES.y):
 		for x in range(MAP_SIZE_TILES.x):
 			var c := Vector2i(x, y)
-			_bg.set_cell(c, 0, _rice_background_tile(c))
-			_ground.set_cell(c, 0, _base_ground_tile(c))
+			_bg.set_cell(c, SRC_PLAINS, _bg_tile(c))
+			_ground.set_cell(c, SRC_PLAINS, _grass_tile(c))
 
-	_apply_north_bamboo_band()
-	_apply_side_rice_strips()
+	_apply_outer_forest()
 	_apply_water_ponds()
 	_apply_main_paths()
-	_apply_south_village()
+	_apply_south_clearing()
 	_preserve_center_clearing()
 
 
-func _grass_rand() -> Vector2i:
-	return _GRASS[_rng.randi() % _GRASS.size()]
+func _bg_tile(_c: Vector2i) -> Vector2i:
+	# Slight variation, deterministic (no RNG).
+	return Vector2i(0, 0)
 
 
-func _base_ground_tile(c: Vector2i) -> Vector2i:
-	# Northern forest floor
-	if c.y < 6:
-		return _pick([_BAMBOO_FLOOR, Vector2i(6, 1), Vector2i(7, 1)], c)
-	return _grass_rand()
+func _grass_tile(c: Vector2i) -> Vector2i:
+	var gx := int(absi((c.x * 31) ^ (c.y * 17))) % _GRASS_X.size()
+	return Vector2i(_GRASS_X[gx], 0)
 
 
-func _rice_background_tile(c: Vector2i) -> Vector2i:
-	var stripe := (c.x / 3 + c.y / 2) % 2
-	return Vector2i(2 + stripe * 2, 5)
-
-
-func _apply_north_bamboo_band() -> void:
-	for y in range(0, 6):
+func _apply_outer_forest() -> void:
+	var margin := 4
+	for y in range(MAP_SIZE_TILES.y):
 		for x in range(MAP_SIZE_TILES.x):
 			var c := Vector2i(x, y)
 			if UI_CLEAR_TILES.has_point(c):
 				continue
-			_ground.set_cell(c, 0, _pick([_BAMBOO_FLOOR, Vector2i(6, 1), Vector2i(7, 1)], c))
-			if y < 4 and x % 2 == 0:
-				_deco.set_cell(c, 0, _FENCE)
-			elif y == 4:
-				_deco.set_cell(c, 0, _ROOF)
-
-
-func _apply_side_rice_strips() -> void:
-	for y in range(6, MAP_SIZE_TILES.y - 8):
-		for x in range(0, 8):
-			var c := Vector2i(x, y)
-			if UI_CLEAR_TILES.has_point(c):
-				continue
-			_bg.set_cell(c, 0, _RICE_BG)
-			_ground.set_cell(c, 0, _DIRT_B if (x + y) % 2 == 0 else _grass_rand())
-		for x in range(MAP_SIZE_TILES.x - 8, MAP_SIZE_TILES.x):
-			var c := Vector2i(x, y)
-			if UI_CLEAR_TILES.has_point(c):
-				continue
-			_bg.set_cell(c, 0, Vector2i(4, 5))
-			_ground.set_cell(c, 0, _DIRT_A if (x + y) % 2 == 0 else _grass_rand())
+			if x < margin or x >= MAP_SIZE_TILES.x - margin \
+					or y < margin or y >= MAP_SIZE_TILES.y - margin:
+				var tx := (x + y * 3) % 6
+				_ground.set_cell(c, SRC_PLAINS, Vector2i(tx, 8))
+				if (x + y) % 4 == 0:
+					_deco.set_cell(c, SRC_DECOR, Vector2i((x >> 1) % 4, 2))
 
 
 func _apply_water_ponds() -> void:
@@ -122,7 +107,9 @@ func _apply_water_ponds() -> void:
 				var c := Vector2i(x, y)
 				if UI_CLEAR_TILES.has_point(c):
 					continue
-				_ground.set_cell(c, 0, _WATER if (x + y) % 3 != 0 else Vector2i(6, 0))
+				var wx := (x + y) % 6
+				var wy := ((x >> 1) + y) % 4
+				_ground.set_cell(c, SRC_WATER, Vector2i(wx, wy))
 				_deco.erase_cell(c)
 
 
@@ -133,32 +120,24 @@ func _apply_main_paths() -> void:
 			var c := Vector2i(px, y)
 			if UI_CLEAR_TILES.has_point(c):
 				continue
-			_ground.set_cell(c, 0, _DIRT_A if (px + y) % 2 == 0 else _DIRT_B)
+			_ground.set_cell(c, SRC_PLAINS, _DIRT_A if (px + y) % 2 == 0 else _DIRT_B)
 
 
-func _apply_south_village() -> void:
+func _apply_south_clearing() -> void:
 	for y in range(MAP_SIZE_TILES.y - 7, MAP_SIZE_TILES.y):
 		for x in range(MAP_SIZE_TILES.x):
 			var c := Vector2i(x, y)
 			if UI_CLEAR_TILES.has_point(c):
 				continue
-			_ground.set_cell(c, 0, _DIRT_A if (x + y) % 2 == 0 else _DIRT_B)
-			if y == MAP_SIZE_TILES.y - 7 and x % 4 < 2:
-				_deco.set_cell(c, 0, _ROOF)
-			elif y >= MAP_SIZE_TILES.y - 5:
-				if x % 5 == 0:
-					_deco.set_cell(c, 0, _HOUSE)
+			_ground.set_cell(c, SRC_PLAINS, _DIRT_A if (x + y) % 2 == 0 else _DIRT_B)
+			if y >= MAP_SIZE_TILES.y - 4 and x % 6 == 0:
+				_deco.set_cell(c, SRC_DECOR, Vector2i(1, 4))
 
 
 func _preserve_center_clearing() -> void:
 	for y in range(UI_CLEAR_TILES.position.y, UI_CLEAR_TILES.end.y):
 		for x in range(UI_CLEAR_TILES.position.x, UI_CLEAR_TILES.end.x):
 			var c := Vector2i(x, y)
-			_bg.set_cell(c, 0, Vector2i(1, 5))
-			_ground.set_cell(c, 0, _grass_rand())
+			_bg.set_cell(c, SRC_PLAINS, Vector2i(1, 0))
+			_ground.set_cell(c, SRC_PLAINS, _grass_tile(c))
 			_deco.erase_cell(c)
-
-
-func _pick(options: Array[Vector2i], c: Vector2i) -> Vector2i:
-	var idx := int(absi(hash(c)) % options.size())
-	return options[idx]

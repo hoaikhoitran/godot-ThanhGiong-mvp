@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" path="res://icon.svg" id="2"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_1"]
-radius = 10.0
+radius = 8.0
 
 [node name="Food" type="Area2D"]
 z_index = 5
@@ -19,5 +19,5 @@ shape = SubResource("CircleShape2D_1")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2")
-scale = Vector2(0.35, 0.35)
+scale = Vector2(0.27, 0.27)
 z_index = 5

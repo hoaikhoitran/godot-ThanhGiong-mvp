@@ -1,0 +1,82 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://Assets/characters/boss/attack/attack_01.png" id="1_lnwdt"]
+[ext_resource type="Texture2D" path="res://Assets/characters/boss/attack/attack_02.png" id="2_htvl0"]
+[ext_resource type="Texture2D" path="res://Assets/characters/boss/attack/attack_03.png" id="3_1knv0"]
+[ext_resource type="Texture2D" path="res://Assets/characters/boss/attack/attack_04.png" id="4_h5tuo"]
+[ext_resource type="Texture2D" path="res://Assets/characters/boss/attack/attack_05.png" id="5_6rbgl"]
+[ext_resource type="Texture2D" path="res://Assets/characters/boss/walk/walk_01.png" id="6_ngk2j"]
+[ext_resource type="Texture2D" path="res://Assets/characters/boss/walk/walk_02.png" id="7_hxi0a"]
+[ext_resource type="Texture2D" path="res://Assets/characters/boss/walk/walk_03.png" id="8_goasb"]
+[ext_resource type="Texture2D" path="res://Assets/characters/boss/walk/walk_04.png" id="9_5e4s4"]
+[ext_resource type="Texture2D" path="res://Assets/characters/boss/walk/walk_05.png" id="10_q7omr"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_lnwdt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_htvl0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_1knv0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_h5tuo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_6rbgl")
+}],
+"loop": false,
+"name": &"attack",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_6rbgl")
+}],
+"loop": false,
+"name": &"die",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_ngk2j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_hxi0a")
+}],
+"loop": false,
+"name": &"hit",
+"speed": 14.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_ngk2j")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_ngk2j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_hxi0a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_goasb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_5e4s4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_q7omr")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 10.0
+}]

@@ -1,0 +1,29 @@
+{
+  "frame_size": {
+    "width": 341,
+    "height": 310
+  },
+  "animations": {
+    "walk": [
+      "walk/walk_01.png",
+      "walk/walk_02.png",
+      "walk/walk_03.png",
+      "walk/walk_04.png",
+      "walk/walk_05.png"
+    ],
+    "attack": [
+      "attack/attack_01.png",
+      "attack/attack_02.png",
+      "attack/attack_03.png",
+      "attack/attack_04.png",
+      "attack/attack_05.png"
+    ],
+    "idle": [],
+    "other": []
+  },
+  "notes": [
+    "Detected 10 main frames from the generated spritesheet: 5 walk + 5 attack.",
+    "No separate idle frames were detected in the image, so /idle is intentionally empty.",
+    "Frames were extracted from the visible sprite sheet and aligned onto a common transparent canvas."
+  ]
+}

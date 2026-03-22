@@ -1,0 +1,31 @@
+{
+  "folders": {
+    "walk": {
+      "canvas_size": [
+        243,
+        266
+      ],
+      "anchor_x": 131,
+      "ground_y": 235,
+      "count": 5
+    },
+    "attack": {
+      "canvas_size": [
+        246,
+        254
+      ],
+      "anchor_x": 133,
+      "ground_y": 231,
+      "count": 5
+    },
+    "other": {
+      "canvas_size": [
+        309,
+        277
+      ],
+      "anchor_x": 141,
+      "ground_y": 245,
+      "count": 9
+    }
+  }
+}

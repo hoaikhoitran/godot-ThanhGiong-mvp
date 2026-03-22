@@ -5,7 +5,18 @@ var food_collected: int = 0
 var food_required: int = 10
 
 # --- Level 2 API (required by spec) ---
+## Counts minions only (not the boss).
 var enemies_left: int = 0
+
+enum Level2Phase {
+	MINIONS,
+	BOSS_PENDING,
+	BOSS_ACTIVE,
+	DONE,
+}
+
+## Minions → boss intro → boss fight → victory.
+var level2_phase: Level2Phase = Level2Phase.MINIONS
 
 # --- Shared API (required by spec) ---
 # Player movement gate used by Player scripts.
@@ -13,12 +24,18 @@ var player_can_move: bool = true
 
 var _level1_complete_emitted: bool = false
 var _level2_complete_emitted: bool = false
+var _level2_minions_cleared_emitted: bool = false
 
 # Signals (used by UI and scene managers)
 signal level1_food_updated(collected: int, required: int)
+## Emitted once when Level 1 tutorial image intro has finished (e.g. 3s overlay).
+signal level1_intro_finished()
 signal level1_complete()
 signal level2_enemy_remaining_updated(remaining: int)
+## Emitted once when the last minion dies (before boss spawns).
+signal level2_minions_cleared()
 signal level2_complete()
+
 
 func _ready() -> void:
 	_ensure_attack_action()
@@ -82,6 +99,8 @@ func reset_level1() -> void:
 func reset_level2(enemy_count: int) -> void:
 	enemies_left = max(enemy_count, 0)
 	_level2_complete_emitted = false
+	_level2_minions_cleared_emitted = false
+	level2_phase = Level2Phase.MINIONS
 	player_can_move = true
 	emit_signal("level2_enemy_remaining_updated", enemies_left)
 
@@ -100,23 +119,45 @@ func add_food() -> void:
 		emit_signal("level1_complete")
 
 
-func enemy_defeated() -> void:
-	# Only Level 2 uses this.
-	if is_level2_complete():
+func enemy_defeated_minion() -> void:
+	if level2_phase != Level2Phase.MINIONS:
+		return
+	if _level2_complete_emitted:
 		return
 
 	enemies_left = max(enemies_left - 1, 0)
 	emit_signal("level2_enemy_remaining_updated", enemies_left)
 
-	if is_level2_complete() and not _level2_complete_emitted:
-		_level2_complete_emitted = true
-		player_can_move = false
-		emit_signal("level2_complete")
+	if enemies_left == 0 and not _level2_minions_cleared_emitted:
+		_level2_minions_cleared_emitted = true
+		level2_phase = Level2Phase.BOSS_PENDING
+		emit_signal("level2_minions_cleared")
+
+
+func set_level2_boss_active() -> void:
+	if level2_phase == Level2Phase.BOSS_PENDING:
+		level2_phase = Level2Phase.BOSS_ACTIVE
+
+
+func boss_defeated() -> void:
+	if level2_phase != Level2Phase.BOSS_ACTIVE:
+		return
+	if _level2_complete_emitted:
+		return
+	_level2_complete_emitted = true
+	level2_phase = Level2Phase.DONE
+	player_can_move = false
+	emit_signal("level2_complete")
+
+
+## True once the boss is dead and Victory should run.
+func is_level2_complete() -> bool:
+	return _level2_complete_emitted
+
+
+func is_level2_minion_spawn_allowed() -> bool:
+	return level2_phase == Level2Phase.MINIONS and enemies_left > 0
 
 
 func is_level1_complete() -> bool:
 	return food_collected >= food_required
-
-
-func is_level2_complete() -> bool:
-	return enemies_left <= 0

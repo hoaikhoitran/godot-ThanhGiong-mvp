@@ -1,0 +1,114 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://Assets/characters/horse_rider/attack1_swipe/attack1_swipe_01.png" id="1_hfuyx"]
+[ext_resource type="Texture2D" path="res://Assets/characters/horse_rider/attack1_swipe/attack1_swipe_02.png" id="2_pc3l4"]
+[ext_resource type="Texture2D" path="res://Assets/characters/horse_rider/attack1_swipe/attack1_swipe_03.png" id="3_2b8s6"]
+[ext_resource type="Texture2D" path="res://Assets/characters/horse_rider/attack2_powerful_thrust/attack2_powerful_thrust_01.png" id="4_ksm7e"]
+[ext_resource type="Texture2D" path="res://Assets/characters/horse_rider/attack2_powerful_thrust/attack2_powerful_thrust_02.png" id="5_j5r2w"]
+[ext_resource type="Texture2D" path="res://Assets/characters/horse_rider/attack2_powerful_thrust/attack2_powerful_thrust_03.png" id="6_khxun"]
+[ext_resource type="Texture2D" path="res://Assets/characters/horse_rider/attack2_powerful_thrust/attack2_powerful_thrust_04.png" id="7_vvrva"]
+[ext_resource type="Texture2D" path="res://Assets/characters/horse_rider/block/block_01.png" id="8_tcmq2"]
+[ext_resource type="Texture2D" path="res://Assets/characters/horse_rider/block/block_02.png" id="9_0xvr4"]
+[ext_resource type="Texture2D" path="res://Assets/characters/horse_rider/block/block_03.png" id="10_c2j8d"]
+[ext_resource type="Texture2D" path="res://Assets/characters/horse_rider/block/block_04.png" id="11_tfx3l"]
+[ext_resource type="Texture2D" path="res://Assets/characters/horse_rider/block/block_05.png" id="12_nncw1"]
+[ext_resource type="Texture2D" path="res://Assets/characters/horse_rider/idle/idle_01.png" id="13_sv7gf"]
+[ext_resource type="Texture2D" path="res://Assets/characters/horse_rider/idle/idle_02.png" id="14_pypgg"]
+[ext_resource type="Texture2D" path="res://Assets/characters/horse_rider/idle/idle_03.png" id="15_rbrfu"]
+[ext_resource type="Texture2D" path="res://Assets/characters/horse_rider/idle/idle_04.png" id="16_04rpn"]
+[ext_resource type="Texture2D" path="res://Assets/characters/horse_rider/run/run_01.png" id="17_bhlei"]
+[ext_resource type="Texture2D" path="res://Assets/characters/horse_rider/run/run_02.png" id="18_10gll"]
+[ext_resource type="Texture2D" path="res://Assets/characters/horse_rider/run/run_03.png" id="19_h00af"]
+[ext_resource type="Texture2D" path="res://Assets/characters/horse_rider/run/run_04.png" id="20_w33r8"]
+[ext_resource type="Texture2D" path="res://Assets/characters/horse_rider/run/run_05.png" id="21_qivud"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_hfuyx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_pc3l4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_2b8s6")
+}],
+"loop": false,
+"name": &"attack1_swipe",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_ksm7e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_j5r2w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_khxun")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_vvrva")
+}],
+"loop": false,
+"name": &"attack2_powerful_thrust",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_tcmq2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_0xvr4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_c2j8d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_tfx3l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_nncw1")
+}],
+"loop": true,
+"name": &"block",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("13_sv7gf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_pypgg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_rbrfu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_04rpn")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("17_bhlei")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_10gll")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_h00af")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_w33r8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_qivud")
+}],
+"loop": true,
+"name": &"run",
+"speed": 9.0
+}]

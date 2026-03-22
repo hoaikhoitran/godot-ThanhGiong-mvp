@@ -3,9 +3,12 @@ extends CharacterBody2D
 @export var move_speed: float = 150.0
 @export var hunger_message_duration: float = 3.0
 @export var transform_delay: float = 1.5
+## Bắt đầu phát từ vị trí này (giây) trong file ăn — MP3 thường có ~1s im lặng đầu file, khiến âm thanh tưởng như trễ so với animation.
+@export_range(0.0, 10.0, 0.01) var eat_sfx_play_from_seconds: float = 1.0
 
 @onready var hunger_label: Label = $HungerLabel
 @onready var sprite: Sprite2D = $Sprite2D
+@onready var eat_food_sfx: AudioStreamPlayer = $EatFoodSfx
 
 var _can_move: bool = false
 var _transforming: bool = false
@@ -82,10 +85,9 @@ func _ready() -> void:
 	if not Global.level1_complete.is_connected(_on_level1_complete):
 		Global.level1_complete.connect(_on_level1_complete)
 
-	# During the hunger message, the player cannot move.
+	# Intro handled by Level1 (tutorial image 3s); stay still until timer ends.
 	Global.player_can_move = false
-	hunger_label.text = "Nhóc đói quá... đi tìm đồ ăn thôi!"
-	hunger_label.visible = true
+	hunger_label.visible = false
 	_can_move = false
 	# Force visibility in case the sprite was hidden/fully transparent.
 	sprite.visible = true
@@ -97,7 +99,7 @@ func _ready() -> void:
 	_fallback_texture = sprite.texture
 	_setup_child_lv1_animations()
 
-	await get_tree().create_timer(hunger_message_duration).timeout
+	await Global.level1_intro_finished
 
 	hunger_label.visible = false
 	_can_move = true
@@ -154,17 +156,28 @@ func _on_level1_complete() -> void:
 	_play_child_anim(0.0, "transform")
 
 	await get_tree().create_timer(transform_delay).timeout
-	get_tree().change_scene_to_file("res://Scenes/Level_2.tscn")
+	get_tree().change_scene_to_file("res://Scenes/map_lv_2_new.scn")
 
 
 func collect_food() -> void:
 	# Called by Food.gd when the player touches a food item.
+	_play_eat_food_sfx()
 	Global.add_food()
 	# Tiny visual feedback on pickup without affecting movement gating.
 	if _frames_loaded and not _transforming and not _can_move:
 		return
 	if _frames_loaded and not _transforming:
 		_eat_override_time_left = 0.15
+
+
+func _play_eat_food_sfx() -> void:
+	if eat_food_sfx.stream == null:
+		return
+	var pos := eat_sfx_play_from_seconds
+	var stream_len := eat_food_sfx.stream.get_length()
+	if stream_len > 0.0:
+		pos = clampf(pos, 0.0, maxf(stream_len - 0.01, 0.0))
+	eat_food_sfx.play(pos)
 
 
 # -----------------------------
