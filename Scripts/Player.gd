@@ -156,7 +156,7 @@ func _on_level1_complete() -> void:
 	_play_child_anim(0.0, "transform")
 
 	await get_tree().create_timer(transform_delay).timeout
-	get_tree().change_scene_to_file("res://Scenes/map_lv_2_new.scn")
+	get_tree().change_scene_to_file("res://Scenes/map_lv_2_new.tscn")
 
 
 func collect_food() -> void:

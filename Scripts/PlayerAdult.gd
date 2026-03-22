@@ -297,6 +297,18 @@ func take_damage(amount: int) -> void:
 		Global.player_can_move = false
 
 
+func heal(amount: int) -> void:
+	if health <= 0:
+		return
+	var add: int = maxi(1, amount)
+	var prev: int = health
+	health = mini(max_health, health + add)
+	if health == prev:
+		return
+	emit_signal("health_changed", health, max_health)
+	_flash_heal()
+
+
 func _base_modulate_for_flash() -> Color:
 	if is_attacking:
 		return _attack_modulate
@@ -308,3 +320,10 @@ func _flash_damage() -> void:
 	var t := create_tween()
 	t.tween_property(sprite, ^"modulate", Color(1, 0.45, 0.45, 1), 0.06)
 	t.tween_property(sprite, ^"modulate", restore, 0.12)
+
+
+func _flash_heal() -> void:
+	var restore := _base_modulate_for_flash()
+	var t := create_tween()
+	t.tween_property(sprite, ^"modulate", Color(0.55, 1, 0.6, 1), 0.08)
+	t.tween_property(sprite, ^"modulate", restore, 0.14)

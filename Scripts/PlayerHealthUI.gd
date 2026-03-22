@@ -12,13 +12,25 @@ var _player: Node = null
 func _ready() -> void:
 	layer = 11
 	var bg := StyleBoxFlat.new()
-	bg.bg_color = Color(0.12, 0.12, 0.14, 0.92)
+	bg.bg_color = Color(0.11, 0.08, 0.06, 0.9)
+	bg.corner_radius_top_left = 8
+	bg.corner_radius_top_right = 8
+	bg.corner_radius_bottom_left = 8
+	bg.corner_radius_bottom_right = 8
 	bar.add_theme_stylebox_override(&"background", bg)
 	var bg2 := StyleBoxFlat.new()
-	bg2.bg_color = Color(0.12, 0.12, 0.14, 0.92)
+	bg2.bg_color = Color(0.08, 0.1, 0.08, 0.92)
+	bg2.corner_radius_top_left = 8
+	bg2.corner_radius_top_right = 8
+	bg2.corner_radius_bottom_left = 8
+	bg2.corner_radius_bottom_right = 8
 	attack2_bar.add_theme_stylebox_override(&"background", bg2)
 	var fill2 := StyleBoxFlat.new()
-	fill2.bg_color = Color(0.45, 0.55, 0.95)
+	fill2.bg_color = Color(0.74, 0.33, 0.17)
+	fill2.corner_radius_top_left = 8
+	fill2.corner_radius_top_right = 8
+	fill2.corner_radius_bottom_left = 8
+	fill2.corner_radius_bottom_right = 8
 	attack2_bar.add_theme_stylebox_override(&"fill", fill2)
 	call_deferred(&"_bind_player")
 
@@ -49,13 +61,17 @@ func _on_health_changed(current: int, max_h: int) -> void:
 func _apply_bar_color(ratio: float) -> void:
 	var fill: Color
 	if ratio > 0.6:
-		fill = Color(0.2, 0.75, 0.35)
+		fill = Color(0.22, 0.62, 0.33)
 	elif ratio > 0.3:
-		fill = Color(0.9, 0.75, 0.2)
+		fill = Color(0.8, 0.63, 0.25)
 	else:
-		fill = Color(0.85, 0.2, 0.2)
+		fill = Color(0.78, 0.2, 0.15)
 	var sb := StyleBoxFlat.new()
 	sb.bg_color = fill
+	sb.corner_radius_top_left = 8
+	sb.corner_radius_top_right = 8
+	sb.corner_radius_bottom_left = 8
+	sb.corner_radius_bottom_right = 8
 	bar.add_theme_stylebox_override(&"fill", sb)
 
 
@@ -78,6 +94,6 @@ func _update_attack2_ui() -> void:
 	attack2_bar.value = rem
 	if rem > 0.05:
 		attack2_panel.visible = true
-		attack2_label.text = "Đòn 2: %.1fs" % rem
+		attack2_label.text = "LUA THIEN: %.1fs" % rem
 	else:
 		attack2_panel.visible = false
