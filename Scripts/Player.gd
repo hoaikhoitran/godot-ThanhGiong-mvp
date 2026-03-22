@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+const LEVEL1_END_VIDEO_SCENE := "res://Scenes/Level1EndVideo.tscn"
+
 @export var move_speed: float = 150.0
 @export var hunger_message_duration: float = 3.0
 @export var transform_delay: float = 1.5
@@ -156,7 +158,7 @@ func _on_level1_complete() -> void:
 	_play_child_anim(0.0, "transform")
 
 	await get_tree().create_timer(transform_delay).timeout
-	get_tree().change_scene_to_file("res://Scenes/map_lv_2_new.scn")
+	get_tree().change_scene_to_file(LEVEL1_END_VIDEO_SCENE)
 
 
 func collect_food() -> void:

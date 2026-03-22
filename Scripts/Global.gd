@@ -1,5 +1,11 @@
 extends Node
 
+const _LEVEL1_BGM_PATH := "res://Assets/audio/level1_bgm.mp3"
+## Same perceived loudness as former Level1-only BGM (+6 dB vs old −4 dB).
+const _LEVEL1_BGM_DB := 2.0
+
+var _level1_bgm: AudioStreamPlayer
+
 # --- Level 1 API (required by spec) ---
 var food_collected: int = 0
 var food_required: int = 10
@@ -161,3 +167,31 @@ func is_level2_minion_spawn_allowed() -> bool:
 
 func is_level1_complete() -> bool:
 	return food_collected >= food_required
+
+
+## Starts Level 1 BGM if not already playing (used by intro dialogue + Level 1).
+func ensure_level1_bgm_playing() -> void:
+	if _level1_bgm != null and is_instance_valid(_level1_bgm):
+		if _level1_bgm.playing:
+			return
+		if _level1_bgm.stream != null:
+			_level1_bgm.play()
+			return
+
+	if not FileAccess.file_exists(_LEVEL1_BGM_PATH):
+		push_warning("Global: Level 1 BGM missing: %s" % _LEVEL1_BGM_PATH)
+		return
+	var f := FileAccess.open(_LEVEL1_BGM_PATH, FileAccess.READ)
+	if f == null:
+		push_warning("Global: could not open Level 1 BGM: %s" % _LEVEL1_BGM_PATH)
+		return
+	var mp3 := AudioStreamMP3.new()
+	mp3.data = f.get_buffer(f.get_length())
+	f.close()
+	mp3.loop = true
+	_level1_bgm = AudioStreamPlayer.new()
+	_level1_bgm.name = &"Level1Bgm"
+	_level1_bgm.stream = mp3
+	_level1_bgm.volume_db = _LEVEL1_BGM_DB
+	add_child(_level1_bgm)
+	_level1_bgm.play()

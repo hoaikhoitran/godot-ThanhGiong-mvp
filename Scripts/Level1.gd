@@ -1,19 +1,12 @@
 extends Node2D
 
-const _LEVEL1_BGM := "res://Assets/audio/level1_bgm.mp3"
-## Audible over kitchen ambience; lower if it masks eat SFX.
-## +6 dB vs the old −4 dB setting ≈ gấp đôi biên độ (âm lượng cảm nhận tăng rõ).
-const _LEVEL1_BGM_DB := 2.0
-
 const _TUTORIAL_TEXTURE := "res://Assets/ui/level1_tutorial_overlay.jpg"
 ## Must match Player.hunger_message_duration (intro lockout).
 const _INTRO_DURATION_SEC := 3.0
 
-var _bgm: AudioStreamPlayer
-
 
 func _ready() -> void:
-	_load_and_play_bgm()
+	Global.ensure_level1_bgm_playing()
 	await _show_tutorial_intro()
 
 
@@ -60,23 +53,3 @@ func _show_tutorial_intro() -> void:
 	await get_tree().create_timer(_INTRO_DURATION_SEC).timeout
 	layer.queue_free()
 	Global.level1_intro_finished.emit()
-
-
-func _load_and_play_bgm() -> void:
-	if not FileAccess.file_exists(_LEVEL1_BGM):
-		push_warning("Level1: BGM file missing: %s" % _LEVEL1_BGM)
-		return
-	var f := FileAccess.open(_LEVEL1_BGM, FileAccess.READ)
-	if f == null:
-		push_warning("Level1: could not open BGM (check import): %s" % _LEVEL1_BGM)
-		return
-	var mp3 := AudioStreamMP3.new()
-	mp3.data = f.get_buffer(f.get_length())
-	f.close()
-	mp3.loop = true
-	_bgm = AudioStreamPlayer.new()
-	_bgm.name = &"Level1Bgm"
-	_bgm.stream = mp3
-	_bgm.volume_db = _LEVEL1_BGM_DB
-	add_child(_bgm)
-	_bgm.play()
