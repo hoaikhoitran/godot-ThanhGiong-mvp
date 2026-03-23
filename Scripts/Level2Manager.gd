@@ -2,6 +2,8 @@ extends CanvasLayer
 
 const ENEMY_SCENE := preload("res://Scenes/Enemy.tscn")
 const BOSS_SCENE := preload("res://Scenes/Boss.tscn")
+## Thời gian giữ thông báo boss ở độ mờ đầy (sau hiệu ứng fade-in).
+const BOSS_ANNOUNCE_HOLD_SEC := 5.0
 const HEALTH_POTION_SCENE := preload("res://Scenes/HealthPotion.tscn")
 
 @onready var enemy_remaining_label: Label = $EnemyRemainingLabel
@@ -380,7 +382,7 @@ func _spawn_fallback_grid(
 
 func _on_level2_minions_cleared() -> void:
 	enemy_remaining_label.text = "NHIEM VU: Danh bai Boss An"
-	_show_boss_announce("Boss An xuat hien", 5.0)
+	_show_boss_announce("Boss An xuat hien", BOSS_ANNOUNCE_HOLD_SEC)
 	_show_toast("Can than don tan cong manh", 2.4)
 	await get_tree().create_timer(2.7).timeout
 	_spawn_boss()
@@ -421,43 +423,64 @@ func _show_block_hint_temporarily() -> void:
 	block_hint_label.visible = false
 
 
-func _show_boss_announce(message: String, duration: float = 7.0) -> void:
+func _show_boss_announce(message: String, duration: float = BOSS_ANNOUNCE_HOLD_SEC) -> void:
+	_boss_announce_sequence(message, duration)
+
+
+func _boss_announce_sequence(message: String, duration: float) -> void:
 	boss_announce_label.text = message
 	boss_announce_label.visible = true
-	var base_y := boss_announce_label.position.y
-	boss_announce_label.position.y = base_y - 12.0
+	boss_announce_label.move_to_front()
+	# Neo góc phải: dùng offset_top/bottom.
+	var base_top := boss_announce_label.offset_top
+	var base_bottom := boss_announce_label.offset_bottom
+	const SLIDE_IN := 12.0
+	boss_announce_label.offset_top = base_top - SLIDE_IN
+	boss_announce_label.offset_bottom = base_bottom - SLIDE_IN
 	boss_announce_label.modulate = Color(1, 1, 1, 0)
-	var t := create_tween()
+	var t := boss_announce_label.create_tween()
 	t.set_parallel(true)
 	t.tween_property(boss_announce_label, ^"modulate:a", 1.0, 0.18)
-	t.tween_property(boss_announce_label, ^"position:y", base_y, 0.18)
-	t.set_parallel(false)
-	t.tween_interval(maxf(0.3, duration))
-	t.set_parallel(true)
-	t.tween_property(boss_announce_label, ^"modulate:a", 0.0, 0.2)
-	t.tween_property(boss_announce_label, ^"position:y", base_y - 8.0, 0.2)
-	t.finished.connect(func() -> void:
-		boss_announce_label.visible = false
-		boss_announce_label.position.y = base_y
-	)
+	t.tween_property(boss_announce_label, ^"offset_top", base_top, 0.18)
+	t.tween_property(boss_announce_label, ^"offset_bottom", base_bottom, 0.18)
+	await t.finished
+	# tween_interval trong một Tween dài đôi khi kết thúc sớm; dùng SceneTreeTimer cho đủ `duration` giây.
+	var hold := maxf(duration, 0.05)
+	await get_tree().create_timer(hold, true).timeout
+	var t2 := boss_announce_label.create_tween()
+	t2.set_parallel(true)
+	t2.tween_property(boss_announce_label, ^"modulate:a", 0.0, 0.2)
+	t2.tween_property(boss_announce_label, ^"offset_top", base_top - 8.0, 0.2)
+	t2.tween_property(boss_announce_label, ^"offset_bottom", base_bottom - 8.0, 0.2)
+	await t2.finished
+	boss_announce_label.visible = false
+	boss_announce_label.offset_top = base_top
+	boss_announce_label.offset_bottom = base_bottom
+	boss_announce_label.modulate = Color(1, 1, 1, 0)
 
 
 func _show_toast(message: String, duration: float = 1.8) -> void:
 	toast_label.text = message
 	toast_label.visible = true
-	var base_y := toast_label.position.y
-	toast_label.position.y = base_y + 10.0
+	var base_top := toast_label.offset_top
+	var base_bottom := toast_label.offset_bottom
+	toast_label.offset_top = base_top + 10.0
+	toast_label.offset_bottom = base_bottom + 10.0
 	toast_label.modulate = Color(1, 1, 1, 0)
-	var t := create_tween()
+	var t := toast_label.create_tween()
 	t.set_parallel(true)
 	t.tween_property(toast_label, ^"modulate:a", 1.0, 0.16)
-	t.tween_property(toast_label, ^"position:y", base_y, 0.16)
+	t.tween_property(toast_label, ^"offset_top", base_top, 0.16)
+	t.tween_property(toast_label, ^"offset_bottom", base_bottom, 0.16)
 	t.set_parallel(false)
 	t.tween_interval(maxf(0.2, duration))
 	t.set_parallel(true)
 	t.tween_property(toast_label, ^"modulate:a", 0.0, 0.2)
-	t.tween_property(toast_label, ^"position:y", base_y - 8.0, 0.2)
+	t.tween_property(toast_label, ^"offset_top", base_top - 8.0, 0.2)
+	t.tween_property(toast_label, ^"offset_bottom", base_bottom - 8.0, 0.2)
 	t.finished.connect(func() -> void:
 		toast_label.visible = false
-		toast_label.position.y = base_y
+		toast_label.offset_top = base_top
+		toast_label.offset_bottom = base_bottom
+		toast_label.modulate = Color(1, 1, 1, 0)
 	)

@@ -194,6 +194,19 @@ func _asset_pack_sheets_dir() -> String:
 	return "res://Assets/giong_godot_assets/sheets/"
 
 
+func _asset_pack_frames_dir() -> String:
+	return "res://Assets/giong_godot_assets/frames/"
+
+
+func _load_texture_sequence(paths: Array[String]) -> Array[Texture2D]:
+	var out: Array[Texture2D] = []
+	for p in paths:
+		var t := ResourceLoader.load(p) as Texture2D
+		if t != null:
+			out.append(t)
+	return out
+
+
 func _slice_sheet(sheet_path: String, frame_width: int, frame_height: int, frame_count: int) -> Array[Texture2D]:
 	var out: Array[Texture2D] = []
 	var atlas := ResourceLoader.load(sheet_path) as Texture2D
@@ -220,7 +233,13 @@ func _setup_child_lv1_animations() -> void:
 
 	# Sizes/count come from giong_godot_assets manifest.
 	_child_idle_frames = _slice_sheet(base + "child_idle_sheet.png", 75, 139, 1)
-	_child_walk_frames = _slice_sheet(base + "child_walk_sheet.png", 100, 139, 4)
+	var walk_paths: Array[String] = [
+		_asset_pack_frames_dir() + "child_walk_01.png",
+		_asset_pack_frames_dir() + "child_walk_02.png",
+		_asset_pack_frames_dir() + "child_walk_03.png",
+		_asset_pack_frames_dir() + "child_walk_04.png",
+	]
+	_child_walk_frames = _load_texture_sequence(walk_paths)
 	_child_transform_frames = _slice_sheet(base + "child_transform_sheet.png", 125, 187, 3)
 	_child_eat_collect_frames = _slice_sheet(base + "child_eat_collect_sheet.png", 108, 127, 1)
 

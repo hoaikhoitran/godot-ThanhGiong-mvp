@@ -123,6 +123,7 @@ func add_food() -> void:
 		_level1_complete_emitted = true
 		player_can_move = false
 		emit_signal("level1_complete")
+		stop_level1_bgm()
 
 
 func enemy_defeated_minion() -> void:
@@ -195,3 +196,8 @@ func ensure_level1_bgm_playing() -> void:
 	_level1_bgm.volume_db = _LEVEL1_BGM_DB
 	add_child(_level1_bgm)
 	_level1_bgm.play()
+
+
+func stop_level1_bgm() -> void:
+	if _level1_bgm != null and is_instance_valid(_level1_bgm):
+		_level1_bgm.stop()
